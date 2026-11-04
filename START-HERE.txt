@@ -1,0 +1,38 @@
+TRANSIT LINK - INSTALL (Windows)
+
+Keep every file in this folder together. Needs Python 3.10 or newer (python.org).
+
+EASIEST: one command
+  1. Open PowerShell in this folder (Shift + right-click > "Open in Terminal").
+  2. Run:
+       powershell -ExecutionPolicy Bypass -File .\install-all.ps1 -Run
+  3. When it says "Starting http://localhost:8000", open that address in your browser.
+
+OR STEP BY STEP (same result)
+  powershell -ExecutionPolicy Bypass -File .\transit-link-bundle.ps1
+  powershell -ExecutionPolicy Bypass -File .\transit-link-ui.ps1 -Target .\transit-link
+  powershell -ExecutionPolicy Bypass -File .\transit-link-fares.ps1 -Target .\transit-link
+  cd transit-link
+  python -m venv .venv
+  .\.venv\Scripts\Activate.ps1
+  pip install -r requirements.txt
+  python -m app.seed --reset --history
+  uvicorn app.main:app --reload
+  (then open http://localhost:8000)
+
+The order matters: bundle first, then ui, then fares. Do not run the fares file on its own.
+
+DEMO LOGINS (type them on the sign-in page; nothing is shown on the page itself)
+  Rider:     0712 345 678      PIN 1234
+  Rider with 2 weeks of trips:  0700 000 000   PIN 0000
+  Operator:  rail              password demo1234
+  Gate:      demo-validator-key-1   (leave the passcode empty)
+             keys 2 to 6 are the other gates (feeder stop, Makadara, Githurai, Ruiru, Thika)
+
+TO RESTART LATER
+  cd transit-link
+  .\.venv\Scripts\Activate.ps1
+  uvicorn app.main:app --reload
+
+If PowerShell blocks scripts: Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+Read transit-link\docs\FARES.md for how boarding, alighting and refunds work.

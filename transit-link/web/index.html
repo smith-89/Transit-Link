@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Transit Link · One account for every ride</title>
+  <meta name="description" content="Top up with M-Pesa, show a QR pass and ride rail and matatus on a single balance.">
+  <meta name="theme-color" content="#1c2120">
+  <link rel="stylesheet" href="shared/theme.css">
+  <link rel="stylesheet" href="shared/site.css">
+</head>
+<body>
+  <div class="lp">
+    <header class="lp-nav">
+      <a class="brand" href="/"><span class="mark" data-star="30"></span>Transit Link</a>
+      <nav class="lp-links" aria-label="Sections">
+        <a href="#how">How it works</a>
+        <a href="#who">Who it's for</a>
+        <a href="#offline">Offline-ready</a>
+      </nav>
+      <div class="lp-actions">
+        <a id="nav-signin" class="btn btn-white btn-sm" href="/login/">Sign in</a>
+        <a id="nav-start" class="btn btn-lime btn-sm" href="/login/?mode=signup">Get started</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <span class="bg-star" data-star="380"></span>
+        <div>
+          <h1>One account for <b>every ride.</b></h1>
+          <p class="lead">Top up with M-Pesa, show a QR code, and travel on rail and matatus with a single balance. It keeps working when the network doesn't.</p>
+          <div class="ctas">
+            <a id="hero-start" class="btn btn-lime" href="/login/?mode=signup">Get started <span data-icon="arrow" data-size="20"></span></a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+        </div>
+
+        <div class="device-wrap" aria-hidden="true">
+          <div class="device">
+            <div class="notch"></div>
+            <div class="dev-top"><span class="icon-btn sm" data-icon="dots" data-size="20"></span><span class="icon-btn sm" data-icon="qr" data-size="20"></span></div>
+            <div class="label">Wallet (KES)</div>
+            <div class="row" style="margin-top:6px;align-items:flex-end;gap:12px"><div class="display">360</div><span class="delta" style="margin-bottom:6px">+8.5% this week</span></div>
+            <div class="dev-actions">
+              <span class="icon-btn lg" data-icon="qr" data-size="22"></span>
+              <span class="icon-btn lg" data-icon="receipt" data-size="22"></span>
+              <span class="btn btn-white">+</span>
+            </div>
+            <div class="card card-lime">
+              <div class="chips"><span class="chip" aria-pressed="true">Spent</span><span class="chip" aria-pressed="false">Added</span></div>
+              <div class="small" style="margin-top:12px;opacity:.7">This week</div>
+              <div class="display md" style="margin-top:4px">KES 150</div>
+              <div id="mock-chart"></div>
+            </div>
+            <div class="dev-nav"><span data-icon="home" data-size="18"></span><span class="on" data-icon="qr" data-size="18"></span><span data-icon="plus" data-size="18"></span><span data-icon="receipt" data-size="18"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="section">
+        <h2>Pay once. Ride everywhere.</h2>
+        <p class="sub">Three steps, no cash, no separate card for every operator.</p>
+        <div class="steps">
+          <article class="step"><div class="n">01</div><h3>Top up with M-Pesa</h3><p>Send money to your Transit Link balance from your phone. It shows up in seconds.</p></article>
+          <article class="step"><div class="n">02</div><h3>Show your pass</h3><p>Your QR code refreshes every minute, so a screenshot is no use to anyone else.</p></article>
+          <article class="step"><div class="n">03</div><h3>Ride on</h3><p>The gate scans you in. Your fare is taken once, and your history stays in the app.</p></article>
+        </div>
+      </section>
+
+      <section id="who" class="section">
+        <h2>Built for the whole route.</h2>
+        <div class="who">
+          <article class="card card-white"><span class="icon-btn dark" data-icon="user"></span><div><h3>Riders</h3><p>One balance, one pass, a clear record of every trip.</p></div></article>
+          <article class="card card-lime"><span class="icon-btn dark" data-icon="chart"></span><div><h3>Operators</h3><p>Live revenue, busy hours and suspicious trips in one dashboard.</p></div></article>
+          <article class="card card-dark"><span class="icon-btn" data-icon="scan"></span><div><h3>Gate teams</h3><p>Fast scanning that carries on even when the connection drops.</p></div></article>
+        </div>
+      </section>
+
+      <section id="offline" class="section">
+        <div class="band">
+          <h2>Works when the network doesn't.</h2>
+          <div class="facts">
+            <div class="fact"><span class="icon-btn" data-icon="wifi"></span><div><strong>Offline scanning</strong><div class="muted small">Taps are saved on the device and sent when it reconnects.</div></div></div>
+            <div class="fact"><span class="icon-btn" data-icon="shield"></span><div><strong>Charged once</strong><div class="muted small">The same tap, sent twice, never costs you twice.</div></div></div>
+            <div class="fact"><span class="icon-btn" data-icon="clock"></span><div><strong>Fresh passes</strong><div class="muted small">Codes expire within minutes to keep your account safe.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top:20px">
+        <div class="cta">
+          <h2>Ready for your next ride?</h2>
+          <a id="cta-start" class="btn btn-black" href="/login/?mode=signup">Create your account <span data-icon="arrow" data-size="20"></span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot"><span>Transit Link · MVP showcase</span><span>Demo data only. No real money moves.</span></footer>
+  </div>
+
+  <script src="shared/api.js"></script>
+  <script src="shared/ui.js"></script>
+  <script>
+    mountIcons();
+    barChart(document.getElementById('mock-chart'), {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      values: [50, 100, 0, 100, 50, 0, 50],
+      selected: 3, fmt: function (v) { return 'KES ' + v; }, compact: false,
+    });
+    // Signed-in visitors get a shortcut straight back to their own screen.
+    var s = Session.get();
+    if (s) {
+      var home = Session.home(s.role);
+      var a = document.getElementById('nav-signin');
+      a.textContent = 'Open app'; a.href = home;
+      ['nav-start', 'hero-start', 'cta-start'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (id === 'nav-start') { el.style.display = 'none'; return; }
+        el.href = home;
+        el.firstChild.textContent = id === 'cta-start' ? 'Open your app ' : 'Open your app ';
+      });
+    }
+  </script>
+</body>
+</html>

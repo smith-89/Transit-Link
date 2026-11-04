@@ -1,0 +1,8 @@
+{
+  "name": "Transit Link Rider",
+  "short_name": "Transit Link",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e8ebe6",
+  "theme_color": "#0a7a55"
+}

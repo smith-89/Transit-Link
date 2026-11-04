@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Transit Link</title>
+  <meta name="theme-color" content="#1c2120">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="../shared/theme.css">
+  <style>
+    .rgrid { display: block; }
+    .rgrid .col > * + * { margin-top: 18px; }
+    .qr-box { display: grid; place-items: center; margin: 22px 0 18px; }
+    #qr { padding: 14px; border-radius: 24px; background: #fff; border: 1px solid #e6ebe1; line-height: 0; }
+    #qr img, #qr canvas { width: min(210px, 62vw); height: auto; }
+    .presets { display: flex; gap: 8px; flex-wrap: wrap; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; margin: 26px 0 6px; }
+    .section-title h2 { font-size: 1.35rem; font-weight: 400; letter-spacing: -.02em; }
+    .link-btn { background: none; border: 0; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 6px; }
+    .greeting { font-size: 1.1rem; color: var(--muted); }
+    @media (min-width: 1000px) {
+      .rgrid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+      .section-title.only-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page wide">
+    <header class="appbar">
+      <button class="icon-btn" id="menu-btn" type="button" aria-label="Open menu" aria-haspopup="true"><span data-icon="dots"></span></button>
+      <div class="mid greeting" id="greeting"></div>
+      <button class="icon-btn" id="pass-shortcut" type="button" aria-label="Show my pass"><span data-icon="qr"></span></button>
+    </header>
+
+    <div class="rgrid">
+      <div class="col">
+        <section class="view active" id="v-home" aria-label="Wallet">
+          <div class="label">Wallet (KES)</div>
+          <div class="row wrap" style="align-items:flex-end;gap:12px;margin-top:8px">
+            <div class="display xl" id="balance">0</div>
+            <span class="delta" id="delta" style="margin-bottom:8px"></span>
+          </div>
+          <div id="neg-note" class="note hidden" style="margin-top:14px"></div>
+          <div class="row" style="margin:22px 0">
+            <button class="icon-btn lg" type="button" data-go="pass" aria-label="Show my pass"><span data-icon="qr"></span></button>
+            <button class="icon-btn lg" type="button" data-go="activity" aria-label="See activity"><span data-icon="receipt"></span></button>
+            <button class="icon-btn lg" type="button" id="refresh" aria-label="Refresh"><span data-icon="refresh"></span></button>
+            <button class="btn btn-white grow" type="button" data-go="topup" style="height:58px" aria-label="Top up"><span data-icon="plus" data-size="26"></span></button>
+          </div>
+
+          <div class="card card-lime">
+            <div class="row spread">
+              <div class="chips" role="group" aria-label="Chart type">
+                <button class="chip" type="button" data-tab="spent" aria-pressed="true">Spent</button>
+                <button class="chip" type="button" data-tab="added" aria-pressed="false">Added</button>
+              </div>
+              <span class="small muted">This week</span>
+            </div>
+            <div class="small muted" style="margin-top:18px">Total</div>
+            <div class="display lg" id="chart-total" style="margin-top:4px">0</div>
+            <div id="chart"></div>
+            <p class="small muted" style="margin-top:6px">Based on your latest activity.</p>
+          </div>
+
+          <div class="only-mobile">
+            <div class="section-title"><h2>Recent activity</h2><button class="link-btn" type="button" data-go="activity">See all</button></div>
+            <ul class="txns" id="recent"></ul>
+            <div class="empty hidden" id="recent-empty">No activity yet. Top up to get started.</div>
+          </div>
+        </section>
+
+        <section class="view" id="v-activity" aria-label="Activity">
+          <div class="card card-glass">
+            <div class="row spread" style="margin-bottom:6px"><h2 style="font-size:1.35rem;font-weight:400;letter-spacing:-.02em">Activity</h2><span class="muted small" id="count"></span></div>
+            <ul class="txns" id="all"></ul>
+            <div class="empty hidden" id="all-empty">No activity yet. Top up to get started.</div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="view" id="v-pass" aria-label="Gate pass">
+          <div class="card card-white">
+            <div class="row spread">
+              <div><h2 style="font-size:1.5rem;font-weight:500;letter-spacing:-.02em">Gate pass</h2><div class="muted small" id="pass-name"></div></div>
+              <span class="icon-btn dark sm" data-icon="qr" data-size="20"></span>
+            </div>
+            <div class="qr-box"><div id="qr" aria-label="Your QR pass"></div></div>
+            <div class="row spread" style="align-items:flex-end">
+              <div class="display md" id="pass-timer">1:00</div>
+              <div class="muted small">until a fresh code</div>
+            </div>
+            <div class="meter" style="margin-top:14px"><i id="pass-meter" style="width:100%"></i></div>
+            <p class="muted small" id="pass-note" style="margin-top:12px">Hold this code up to the scanner.</p>
+          </div>
+        </section>
+
+        <section class="view" id="v-topup" aria-label="Top up">
+          <div class="card card-white">
+            <h2 style="font-size:1.5rem;font-weight:500;letter-spacing:-.02em">Top up with M-Pesa</h2>
+            <form id="topup-form" class="stack" style="margin-top:16px" novalidate>
+              <div class="presets" role="group" aria-label="Quick amounts">
+                <button class="chip" type="button" data-amt="100" aria-pressed="false">100</button>
+                <button class="chip" type="button" data-amt="200" aria-pressed="true">200</button>
+                <button class="chip" type="button" data-amt="500" aria-pressed="false">500</button>
+                <button class="chip" type="button" data-amt="1000" aria-pressed="false">1,000</button>
+              </div>
+              <div class="field"><label for="amount">Amount (KES)</label><input class="input" id="amount" inputmode="numeric" value="200"></div>
+              <div class="field"><label for="topup-phone">Pay from (optional)</label><input class="input" id="topup-phone" inputmode="tel" placeholder="Same as your account"></div>
+              <button class="btn btn-black btn-block" id="topup-btn" type="submit">Send M-Pesa prompt</button>
+              <button class="btn btn-lime btn-block hidden" id="confirm-btn" type="button">Approve on phone (demo)</button>
+              <div id="topup-msg" class="note hidden" role="status"></div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <nav class="pillnav" aria-label="Main">
+    <button type="button" data-view="home" aria-label="Home" aria-current="page"><span data-icon="home"></span></button>
+    <button type="button" data-view="pass" aria-label="Pass"><span data-icon="qr"></span></button>
+    <button type="button" data-view="topup" aria-label="Top up"><span data-icon="plus"></span></button>
+    <button type="button" data-view="activity" aria-label="Activity"><span data-icon="receipt"></span></button>
+  </nav>
+
+  <div class="sheet-back hidden" id="sheet-back">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-name">
+      <div class="row spread"><div><div id="sheet-name" style="font-size:1.4rem;font-weight:500;letter-spacing:-.02em"></div><div class="muted small" id="sheet-phone"></div></div>
+        <button class="icon-btn dark sm" id="sheet-close" type="button" aria-label="Close"><span data-icon="plus" data-size="20" style="display:block;transform:rotate(45deg)"></span></button></div>
+      <button class="btn btn-black btn-block" id="signout" type="button" style="margin-top:20px"><span data-icon="logout" data-size="20"></span> Sign out</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="../shared/api.js"></script>
+  <script src="../shared/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

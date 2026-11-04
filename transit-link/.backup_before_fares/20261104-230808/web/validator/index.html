@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gate · Transit Link</title>
+  <meta name="theme-color" content="#1c2120">
+  <link rel="stylesheet" href="../shared/theme.css">
+  <style>
+    .vgrid { display: block; }
+    .vgrid .col > * + * { margin-top: 16px; }
+    .vgrid .col + .col { margin-top: 16px; }
+    .card h2 { font-size: 1.35rem; font-weight: 400; letter-spacing: -.02em; }
+    details.card summary { cursor: pointer; font-size: 1.1rem; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+    details.card summary::-webkit-details-marker { display: none; }
+    .toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .toggle input { width: 22px; height: 22px; accent-color: var(--lime); }
+    @media (min-width: 1000px) {
+      .vgrid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+      .vgrid .col + .col { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page wide" style="padding-bottom:48px">
+    <header class="appbar">
+      <a class="brand" href="/" style="font-size:1.05rem"><span class="mark" data-star="26" style="color:var(--lime);display:grid"></span>Gate</a>
+      <div class="row">
+        <span id="net-pill" class="pill">Online</span>
+        <span id="queue-pill" class="pill">0 waiting</span>
+        <button class="icon-btn sm" id="signout" type="button" aria-label="Sign out"><span data-icon="logout" data-size="20"></span></button>
+      </div>
+    </header>
+
+    <div class="vgrid">
+      <div class="col">
+        <div id="lamp" class="lamp" role="status" aria-live="polite">
+          <h1 id="lamp-title">Ready</h1>
+          <div id="lamp-sub" class="muted">Start the camera and point it at a rider's QR code.</div>
+        </div>
+
+        <div class="viewfinder"><video id="video" playsinline muted></video></div>
+        <canvas id="canvas" class="hidden"></canvas>
+        <div class="row">
+          <button class="btn btn-white grow" id="cam-btn" type="button"><span data-icon="scan" data-size="22"></span> Start camera</button>
+          <button class="btn btn-ghost grow" id="sync-btn" type="button"><span data-icon="refresh" data-size="20"></span> Sync now</button>
+        </div>
+        <div id="cam-msg" class="note hidden"></div>
+      </div>
+
+      <div class="col">
+        <div class="card card-white">
+          <div class="row spread" style="align-items:flex-start">
+            <div><div class="muted small">Boarding point</div><h2 id="station" style="font-size:1.7rem;font-weight:500;letter-spacing:-.03em"></h2><div class="muted small" id="operator"></div></div>
+            <span class="icon-btn dark sm" data-icon="train" data-size="20"></span>
+          </div>
+          <div class="display lg" id="fare" style="margin-top:14px"></div>
+          <div class="muted small" style="margin-top:4px">Fare per ride</div>
+        </div>
+
+        <div class="card card-glass">
+          <h2>Latest results</h2>
+          <ul class="txns" id="log" style="margin-top:6px"></ul>
+          <div class="empty" id="log-empty">Nothing synced yet.</div>
+        </div>
+
+        <details class="card card-glass">
+          <summary>No camera? Paste a pass <span data-icon="plus" data-size="20"></span></summary>
+          <div class="stack" style="margin-top:14px">
+            <textarea class="input" id="manual" placeholder="Paste the pass token from the rider app"></textarea>
+            <button class="btn btn-lime btn-block" id="manual-btn" type="button">Add pass</button>
+          </div>
+        </details>
+
+        <label class="card card-glass toggle"><input id="offline-sw" type="checkbox"><span><strong>Simulate offline</strong><span class="muted small" style="display:block">For demos: queue taps on this device without a connection.</span></span></label>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" crossorigin="anonymous"></script>
+  <script src="../shared/api.js"></script>
+  <script src="../shared/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

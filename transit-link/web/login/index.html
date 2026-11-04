@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sign in · Transit Link</title>
+  <meta name="theme-color" content="#1c2120">
+  <link rel="stylesheet" href="../shared/theme.css">
+  <link rel="stylesheet" href="../shared/site.css">
+</head>
+<body>
+  <div class="auth">
+    <aside class="auth-side">
+      <a class="brand" href="/"><span class="mark" data-star="30"></span>Transit Link</a>
+      <h2>Your route, <b>one account.</b></h2>
+      <p class="muted">Pay with M-Pesa, ride with a code.</p>
+      <span class="bg-star" data-star="460"></span>
+    </aside>
+
+    <main class="auth-main">
+      <div class="auth-top">
+        <a class="brand" href="/"><span class="mark" data-star="28"></span>Transit Link</a>
+        <a class="btn btn-ghost btn-sm" href="/">Back</a>
+      </div>
+
+      <section class="card card-white auth-card" aria-labelledby="title">
+        <h1 id="title">Welcome back</h1>
+        <p class="muted intro" id="intro">Sign in to continue.</p>
+
+        <form id="form" class="stack" novalidate>
+          <div class="field hidden" id="f-name">
+            <label for="name">Full name</label>
+            <input class="input" id="name" autocomplete="name" placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="ident" id="ident-label">Account</label>
+            <input class="input" id="ident" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Phone number or ID">
+          </div>
+          <div class="field">
+            <label for="secret" id="secret-label">Passcode</label>
+            <div class="input-wrap">
+              <input class="input" id="secret" type="password" autocomplete="current-password" placeholder="Enter your passcode">
+              <button class="reveal" id="reveal" type="button" aria-label="Show passcode"><span data-icon="eye" data-size="20"></span></button>
+            </div>
+          </div>
+          <button class="btn btn-black btn-block" id="submit" type="submit">Sign in</button>
+          <div id="msg" class="note hidden" role="alert"></div>
+        </form>
+
+        <p class="switch muted"><span id="switch-text">New here?</span> <a id="switch" href="?mode=signup">Create an account</a></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="../shared/api.js"></script>
+  <script src="../shared/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

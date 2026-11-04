@@ -1,0 +1,90 @@
+/* Landing page and sign-in page styles (the app screens use theme.css only). */
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.15rem; letter-spacing: -.02em; text-decoration: none; color: #fff; }
+.brand .mark { color: var(--lime); display: grid; }
+
+/* ---------- landing ---------- */
+.lp { position: relative; z-index: 1; overflow-x: clip; }
+.lp-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1180px; margin: 0 auto; padding: 18px 20px; }
+.lp-links { display: none; gap: 30px; }
+.lp-links a { text-decoration: none; color: var(--muted); font-size: 1rem; }
+.lp-links a:hover { color: #fff; }
+.lp-actions { display: flex; gap: 10px; align-items: center; }
+.lp-actions .btn-lime { display: none; }
+
+.hero { position: relative; max-width: 1180px; margin: 0 auto; padding: 30px 20px 48px; display: grid; gap: 44px; }
+.hero h1 { font-size: clamp(3rem, 11vw, 5.8rem); font-weight: 300; letter-spacing: -.05em; line-height: 1; }
+.hero h1 b { font-weight: 600; color: var(--lime); }
+.hero .lead { margin-top: 22px; max-width: 32ch; font-size: clamp(1.1rem, 3.6vw, 1.3rem); color: var(--muted); }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.hero .bg-star { position: absolute; right: -60px; top: -20px; width: 380px; color: rgba(255, 255, 255, .05); pointer-events: none; }
+
+.device-wrap { position: relative; display: grid; place-items: center; }
+.device {
+  position: relative; width: min(340px, 100%); padding: 18px 16px 18px; border-radius: 46px; border: 1px solid rgba(255, 255, 255, .22);
+  background: linear-gradient(180deg, #5b7657 0%, #4a6247 100%); box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+}
+.device .notch { width: 96px; height: 26px; margin: 0 auto 14px; border-radius: 999px; background: #0c0f0e; }
+.device .dev-top { display: flex; justify-content: space-between; margin-bottom: 14px; }
+.device .display { font-size: 3.3rem; }
+.device .dev-actions { display: flex; gap: 8px; margin: 14px 0; }
+.device .dev-actions .icon-btn.lg { width: 50px; height: 50px; border-radius: 18px; }
+.device .dev-actions .btn { flex: 1; height: 50px; font-size: 1.5rem; }
+.device .card-lime { padding: 16px; border-radius: 26px; }
+.device .bars { height: 130px; padding-top: 30px; }
+.device .dev-nav { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
+.device .dev-nav span { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .14); }
+.device .dev-nav span.on { background: #000; }
+.badge-preview { position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); }
+
+.section { max-width: 1180px; margin: 0 auto; padding: 56px 20px; }
+.section > h2 { font-size: clamp(2.1rem, 6.4vw, 3.4rem); font-weight: 300; letter-spacing: -.04em; line-height: 1.05; max-width: 18ch; }
+.section > .sub { margin-top: 14px; color: var(--muted); font-size: 1.1rem; max-width: 46ch; }
+.steps, .who { display: grid; gap: 14px; margin-top: 30px; }
+.step { padding: 24px; border-radius: var(--r-xl); background: var(--glass); border: 1px solid var(--line); }
+.step .n { font-size: 3.4rem; font-weight: 300; letter-spacing: -.05em; line-height: 1; color: var(--lime); }
+.step h3 { margin-top: 18px; font-size: 1.4rem; font-weight: 500; letter-spacing: -.02em; }
+.step p { margin-top: 8px; color: var(--muted); }
+.who .card { min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; gap: 22px; }
+.who h3 { font-size: 1.6rem; font-weight: 500; letter-spacing: -.03em; }
+.who p { margin-top: 8px; opacity: .8; }
+.band { margin-top: 30px; padding: 28px; border-radius: var(--r-xl); background: var(--glass); border: 1px solid var(--line); display: grid; gap: 26px; }
+.band h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 300; letter-spacing: -.035em; line-height: 1.08; }
+.facts { display: grid; gap: 14px; }
+.fact { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+.fact .icon-btn { background: var(--ink); color: var(--lime); }
+.cta { text-align: center; padding: clamp(32px, 7vw, 64px) 22px; border-radius: 36px; background: var(--lime); color: var(--ink); }
+.cta h2 { font-size: clamp(2.2rem, 7vw, 3.8rem); font-weight: 300; letter-spacing: -.045em; line-height: 1.05; margin: 0 auto; max-width: 16ch; }
+.cta .btn { margin-top: 26px; }
+.foot { max-width: 1180px; margin: 0 auto; padding: 34px 20px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--muted); font-size: .9rem; }
+
+@media (min-width: 700px) {
+  .steps, .who { grid-template-columns: repeat(3, 1fr); }
+  .lp-actions .btn-lime { display: inline-flex; }
+  .facts { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 900px) {
+  .hero { grid-template-columns: 1.15fr .85fr; align-items: center; padding-top: 64px; padding-bottom: 80px; }
+  .lp-links { display: flex; }
+  .band { grid-template-columns: .9fr 1.1fr; align-items: center; padding: 40px; }
+  .facts { grid-template-columns: 1fr; }
+}
+
+/* ---------- sign in ---------- */
+.auth { position: relative; z-index: 1; min-height: 100vh; display: grid; }
+.auth-side { display: none; }
+.auth-main { display: flex; flex-direction: column; justify-content: center; gap: 26px; width: 100%; max-width: 480px; margin: 0 auto; padding: 22px 18px 40px; }
+.auth-card { padding: 28px 24px; border-radius: 34px; }
+.auth-card h1 { font-size: 2.1rem; font-weight: 500; letter-spacing: -.035em; line-height: 1.1; }
+.auth-card .intro { margin: 8px 0 24px; }
+.auth-card .switch { margin-top: 20px; text-align: center; font-size: .96rem; }
+.auth-card .switch a { color: var(--black); font-weight: 600; text-underline-offset: 3px; }
+.auth-top { display: flex; justify-content: space-between; align-items: center; }
+@media (min-width: 900px) {
+  .auth { grid-template-columns: 1.1fr .9fr; }
+  .auth-side { display: flex; flex-direction: column; justify-content: space-between; padding: 44px 56px; position: relative; overflow: hidden; }
+  .auth-side h2 { font-size: clamp(3rem, 5vw, 4.6rem); font-weight: 300; letter-spacing: -.05em; line-height: 1.02; max-width: 12ch; }
+  .auth-side h2 b { font-weight: 600; color: var(--lime); }
+  .auth-side .bg-star { position: absolute; right: 56px; bottom: -150px; width: 420px; color: rgba(255, 255, 255, .06); }
+  .auth-main { padding: 44px; max-width: 560px; }
+  .auth-top .brand { display: none; }
+}

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Operator · Transit Link</title>
+  <meta name="theme-color" content="#1c2120">
+  <link rel="stylesheet" href="../shared/theme.css">
+  <style>
+    .ogrid { display: block; }
+    .ogrid .col > * + * { margin-top: 18px; }
+    .card h2 { font-size: 1.35rem; font-weight: 400; letter-spacing: -.02em; }
+    .flag-meta { font-size: .95rem; color: var(--muted); }
+    .greeting { font-size: 1.1rem; color: var(--muted); }
+    @media (min-width: 1000px) {
+      .ogrid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page wide">
+    <header class="appbar">
+      <button class="icon-btn" id="menu-btn" type="button" aria-label="Open menu" aria-haspopup="true"><span data-icon="dots"></span></button>
+      <div class="mid greeting" id="op-name"></div>
+      <button class="icon-btn" id="refresh" type="button" aria-label="Refresh"><span data-icon="refresh"></span></button>
+    </header>
+
+    <div class="ogrid">
+      <div class="col">
+        <section class="view active" id="v-overview" aria-label="Overview">
+          <div class="label">Revenue today (KES)</div>
+          <div class="row wrap" style="align-items:flex-end;gap:12px;margin-top:8px">
+            <div class="display xl" id="rev">0</div>
+            <span class="delta" id="rev-delta" style="margin-bottom:8px"></span>
+          </div>
+          <div class="row" style="margin:22px 0 12px">
+            <button class="icon-btn lg" type="button" data-go="demand" aria-label="See demand"><span data-icon="chart"></span></button>
+            <button class="icon-btn lg" type="button" data-go="flags" aria-label="See suspicious trips"><span data-icon="alert"></span></button>
+            <button class="btn btn-white grow payout-btn" type="button" style="height:58px"><span data-icon="cash" data-size="22"></span> Run payout</button>
+          </div>
+          <div id="payout-msg" class="note hidden" role="status" style="margin-bottom:14px"></div>
+
+          <div class="card card-lime">
+            <div class="row spread">
+              <div class="chips" role="group" aria-label="Chart type">
+                <button class="chip" type="button" data-tab="revenue" aria-pressed="true">Revenue</button>
+                <button class="chip" type="button" data-tab="trips" aria-pressed="false">Trips</button>
+              </div>
+              <span class="small muted">Last 7 days</span>
+            </div>
+            <div class="small muted" style="margin-top:18px">Total</div>
+            <div class="display lg" id="chart-total" style="margin-top:4px">0</div>
+            <div id="chart"></div>
+          </div>
+
+          <div class="tiles" style="margin-top:14px">
+            <div class="tile glass"><span class="icon-btn dark sm" data-icon="cash" data-size="20"></span><div class="k">Unpaid to operator</div><div class="v" id="t-unpaid">0</div></div>
+            <div class="tile lime"><span class="icon-btn dark sm" data-icon="user" data-size="20"></span><div class="k">Riders today</div><div class="v" id="t-riders">0</div></div>
+            <div class="tile white"><span class="icon-btn dark sm" data-icon="alert" data-size="20"></span><div class="k">Declined today</div><div class="v" id="t-declined">0</div></div>
+            <div class="tile glass"><span class="icon-btn dark sm" data-icon="train" data-size="20"></span><div class="k">In journeys now</div><div class="v" id="t-open">0</div></div>
+          </div>
+        </section>
+
+        <section class="view" id="v-flags" aria-label="Suspicious trips">
+          <div class="card card-glass">
+            <h2>Suspicious trips</h2>
+            <p class="muted small" style="margin:6px 0 12px">Leads to review, not verdicts. Found by simple rules plus an anomaly model.</p>
+            <ul class="rows" id="flags"></ul>
+            <div class="empty hidden" id="flags-empty">Nothing suspicious in the last 14 days.</div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="view" id="v-demand" aria-label="Demand">
+          <div class="card card-white">
+            <h2>Typical demand by hour</h2>
+            <p class="muted small" id="peaks" style="margin-top:6px"></p>
+            <div id="hourly" style="margin-top:6px"></div>
+          </div>
+          <div class="card card-glass" style="margin-top:18px">
+            <h2>Boarding points</h2>
+            <ul class="rows" id="stations" style="margin-top:8px"></ul>
+            <div class="empty hidden" id="stations-empty">No trips yet.</div>
+          </div>
+        </section>
+
+        <section class="view" id="v-payouts" aria-label="Payouts">
+          <div class="card card-glass">
+            <div class="row spread wrap" style="margin-bottom:8px">
+              <div><h2>Payouts</h2><p class="muted small">Simulated. No real money moves.</p></div>
+              <button class="btn btn-white btn-sm payout-btn" type="button">Run payout</button>
+            </div>
+            <div id="payout-msg2" class="note hidden" role="status"></div>
+            <ul class="rows" id="payouts"></ul>
+            <div class="empty hidden" id="payouts-empty">No payouts yet.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <nav class="pillnav" aria-label="Main">
+    <button type="button" data-view="overview" aria-label="Overview" aria-current="page"><span data-icon="grid"></span></button>
+    <button type="button" data-view="demand" aria-label="Demand"><span data-icon="chart"></span></button>
+    <button type="button" data-view="flags" aria-label="Suspicious trips"><span data-icon="alert"></span></button>
+    <button type="button" data-view="payouts" aria-label="Payouts"><span data-icon="cash"></span></button>
+  </nav>
+
+  <div class="sheet-back hidden" id="sheet-back">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-name">
+      <div class="row spread"><div><div id="sheet-name" style="font-size:1.4rem;font-weight:500;letter-spacing:-.02em"></div><div class="muted small">Operator dashboard</div></div>
+        <button class="icon-btn dark sm" id="sheet-close" type="button" aria-label="Close"><span data-icon="plus" data-size="20" style="display:block;transform:rotate(45deg)"></span></button></div>
+      <button class="btn btn-black btn-block" id="signout" type="button" style="margin-top:20px"><span data-icon="logout" data-size="20"></span> Sign out</button>
+    </div>
+  </div>
+
+  <script src="../shared/api.js"></script>
+  <script src="../shared/ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
