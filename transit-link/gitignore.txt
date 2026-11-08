@@ -1,0 +1,11 @@
+# Keep secrets, local data and generated files out of GitHub
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+.backup_before_fares/
+_backup_before_fares/
+.DS_Store

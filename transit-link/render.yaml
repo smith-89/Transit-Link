@@ -1,0 +1,45 @@
+# Render Blueprint for Transit Link (demo deployment).
+# Deploy: push this project to GitHub, then in Render choose New > Blueprint and select the repo.
+# What it creates: one web service (the API and the three web apps) and one free Postgres database.
+# The service seeds demo data on start-up, so the demo logins in docs/UI.md work straight away.
+#
+# DEMO ONLY: the demo logins are public to anyone with the link. M-Pesa runs in mock mode, so no
+# real money moves. See docs/DEPLOY.md before using real data or real M-Pesa.
+#
+# Free-tier facts (Render): the service sleeps after 15 minutes without traffic and takes about a
+# minute to wake. The free database expires 30 days after creation, then is deleted after a 14-day
+# grace period unless upgraded.
+
+databases:
+  - name: transit-link-db
+    plan: free
+    region: frankfurt
+
+services:
+  - type: web
+    name: transit-link
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    # Seeds demo data if the database is empty (does nothing on later starts), then serves the app.
+    startCommand: python -m app.seed --history && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        fromDatabase:
+          name: transit-link-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CALLBACK_SECRET
+        generateValue: true
+      - key: AUTO_SEED
+        value: "1"
+      - key: MPESA_MODE
+        value: mock
+      # To use the real M-Pesa sandbox later, set these in the Render dashboard (Environment tab):
+      #   MPESA_MODE=live, MPESA_CONSUMER_KEY, MPESA_CONSUMER_SECRET, MPESA_PASSKEY,
+      #   MPESA_SHORTCODE, and CALLBACK_BASE_URL=https://<your-service>.onrender.com
