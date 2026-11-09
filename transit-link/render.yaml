@@ -19,6 +19,7 @@ services:
   - type: web
     name: transit-link
     runtime: python
+    rootDir: transit-link
     plan: free
     region: frankfurt
     buildCommand: pip install -r requirements.txt
